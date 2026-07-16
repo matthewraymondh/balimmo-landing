@@ -6,7 +6,7 @@
 **Assumptions (documented per the brief):**
 
 - The tunnel URL serves this exact repo via `vite dev`; auditing a local production build of the same commit is therefore representative (and strictly *favourable* to the current page, since the dev server ships unminified code).
-- The repo is a static clone of a Laravel/Livewire original, so "search does nothing" and "form posts nowhere" are partly clone artifacts. I still audit them: **the page as shipped is the page users get**, and the fixes I implemented are written so they can be wired to the real backend.
+- The repo is a static clone of a Laravel/Livewire original, so "search does nothing", "form posts nowhere" and the placeholder listing thumbnails are partly clone artifacts of the missing data integration (the production balimmo.fr site has real photography). I still audit them: **the page as shipped is the page users get**, and each of those findings is framed as what the integration must deliver. The fixes I implemented are written so they can be wired to the real backend.
 - No analytics were provided, so scores are reasoned estimates from heuristics, not measured conversion.
 
 ---
@@ -30,11 +30,11 @@ A real-estate landing page has one job — turn interest into a lead (search, en
 
 ### P0 — Critical
 
-**1. All six "exclusive listings" show the same grey placeholder image.**
-`best-selling-thumb{,2,3}.png` are byte-identical (same MD5) 862×543 placeholders, each used twice.
-*User impact:* photos are the #1 decision input for property buyers; a card grid of identical grey boxes reads as "site is broken" or "listings are fake."
-*Business impact:* this single issue caps conversion of the page's money section at near zero and damages the "exclusive, hand-picked" brand promise.
-*Fix:* export real photos per listing (~800w AVIF/WebP + `srcset`, <100 KB each). Not implementable in this exercise — it needs the real photo assets — so it is fix #1 in the backlog I'd hand the content team.
+**1. All six "exclusive listings" ship the same grey placeholder image.**
+`best-selling-thumb{,2,3}.png` are byte-identical (same MD5) 862×543 placeholders, each used twice. To be fair about the cause: this is almost certainly an artifact of the static clone — `properties.js` documents that the mock data stands in for the DB-driven `$data_property`, and the production site (balimmo.fr) demonstrably has real, optimized photography. So the finding is not "Balimmo has no photos"; it is what this page needs before it can face real traffic:
+- **The listing-image integration is the top open dependency.** As long as cards render identical grey boxes, the money section converts at zero — photos are the #1 decision input for property buyers, and a grid of grey boxes reads as "site is broken" or "listings are fake."
+- **When the integration lands, images must go through an optimization pipeline** (~800w AVIF/WebP + `srcset`, <100 KB each), not raw CMS uploads — the static assets elsewhere in this repo (477–746 KB PNGs) suggest no such pipeline exists yet.
+- **Design the empty state:** a listing without a photo should get a branded fallback, never this raw placeholder.
 
 **2. The mobile filter sheet renders *underneath* the sticky navbar — users get trapped. _(implemented — see §3.1)_**
 The sheet lives inside the hero's `relative z-10` wrapper, which creates a stacking context; its `z-[60]` therefore loses to the `z-50` navbar. Verified in-browser: the "Filters" header and close button sit behind the navbar, and `document.elementFromPoint` at the close button's coordinates returns the **hamburger menu icon**. On a 375px phone the sheet is full-width, so there is no "outside" to tap either — the only escape is the "Find my villa" button itself.
@@ -127,7 +127,7 @@ Rebuilt the form: associated labels, `name`/`autocomplete`, inline validation wi
 | Trust & content (10) | 4 | 5 | Dated title fixed, honest reassurance copy. Photos/testimonials still needed. |
 | SEO (10) | 5 | 8 | OG/Twitter, robots.txt, Lighthouse SEO 100. Remaining: SSG + JSON-LD. |
 
-The remaining ~15–20 points are deliberately *not* code: real listing photos, a wired search/results flow, and testimonials. With those, this page plausibly reaches 80+.
+The remaining ~15–20 points are deliberately *not* frontend polish: the listing data/photo integration, a wired search/results flow, and testimonials. With those, this page plausibly reaches 80+.
 
 ---
 
@@ -165,4 +165,4 @@ The remaining ~15–20 points are deliberately *not* code: real listing photos, 
 1. Wire search to a results view (state is already in `SearchContext`) and make cards real links.
 2. Image pipeline: `vite-imagetools` → AVIF/WebP + `srcset`; re-encode the video to ~1.5 MB/720p (or replace with a still on mobile).
 3. Prerender the page (SSG) and add `RealEstateListing` JSON-LD.
-4. Full focus trap + `inert` background for the sheet; swap the placeholder listing photos the moment assets exist.
+4. Full focus trap + `inert` background for the sheet; wire the real listing images through that same pipeline the moment the data integration lands.
