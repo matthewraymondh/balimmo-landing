@@ -3,7 +3,9 @@ import { featuredProperties } from '../data/properties.js'
 import PropertyCard from './PropertyCard.jsx'
 
 export default function FeaturedListings() {
-  const [currency, setCurrency] = useState('IDR')
+  // Default to USD: the page targets international investors and the hero
+  // search already quotes villa prices in USD.
+  const [currency, setCurrency] = useState('USD')
 
   return (
     <section id="featured" className="section-pad">
