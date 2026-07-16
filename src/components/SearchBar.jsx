@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import FilterChip from './search/FilterChip.jsx'
 import RangeSlider from './search/RangeSlider.jsx'
 import useClickOutside from '../hooks/useClickOutside.js'
@@ -71,6 +72,21 @@ export default function SearchBar({ variant = 'hero' }) {
 
   const sheetRef = useRef(null)
   useClickOutside(sheetRef, () => setSheetOpen(false), sheetOpen)
+
+  // Move focus into the sheet when it opens and back to the trigger on close,
+  // so keyboard / screen-reader users aren't left behind the dialog.
+  const closeBtnRef = useRef(null)
+  const triggerRef = useRef(null)
+  const wasOpen = useRef(false)
+  useEffect(() => {
+    if (sheetOpen) {
+      wasOpen.current = true
+      closeBtnRef.current?.focus()
+    } else if (wasOpen.current) {
+      wasOpen.current = false
+      triggerRef.current?.focus({ preventScroll: true })
+    }
+  }, [sheetOpen])
 
   // ---- chip value summaries ----
   const nameValue = state.name.trim() || 'Any'
@@ -236,6 +252,7 @@ export default function SearchBar({ variant = 'hero' }) {
 
         {/* ===== Mobile: single Search button opens the filter sheet ===== */}
         <button
+          ref={triggerRef}
           type="button"
           onClick={() => setSheetOpen(true)}
           className="btn-solid flex w-full items-center justify-center gap-2 lg:hidden"
@@ -249,10 +266,19 @@ export default function SearchBar({ variant = 'hero' }) {
         </form>
       </div>
 
-      {/* ===== Mobile filter sheet ===== */}
-      {sheetOpen && (
-        <div className="fixed inset-0 z-[60] lg:hidden">
-          <div className="absolute inset-0 bg-black/50" />
+      {/* ===== Mobile filter sheet =====
+          Rendered in a portal: inside the hero the sheet sits in the hero's `z-10`
+          stacking context, which loses to the sticky `z-50` navbar — the header /
+          close button end up hidden (and untappable) behind it. Portaling to
+          <body> puts the dialog in the root stacking context, above everything. */}
+      {sheetOpen && createPortal(
+        <div
+          className="fixed inset-0 z-[100] lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search filters"
+        >
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSheetOpen(false)} />
           <div
             ref={sheetRef}
             className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col bg-white shadow-2xl"
@@ -261,10 +287,11 @@ export default function SearchBar({ variant = 'hero' }) {
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
               <span className="text-lg font-bold text-primary">Filters</span>
               <button
+                ref={closeBtnRef}
                 type="button"
                 onClick={() => setSheetOpen(false)}
                 aria-label="Close filters"
-                className="rounded p-1 text-primary/60 hover:text-primary"
+                className="rounded p-2 text-primary/60 hover:text-primary"
               >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M18 6 6 18M6 6l12 12" />
@@ -319,7 +346,8 @@ export default function SearchBar({ variant = 'hero' }) {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )
