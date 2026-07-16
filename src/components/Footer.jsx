@@ -2,7 +2,7 @@ const QUICK_LINKS = [
   { label: 'Listing', href: '#featured' },
   { label: 'Contact Us', href: '#contact' },
   { label: 'Login', href: '#' },
-  { label: 'Mention Legales', href: '#' },
+  { label: 'Mentions légales', href: '#' },
 ]
 
 const SOCIALS = [
@@ -22,12 +22,15 @@ export default function Footer() {
             <img
               src="/landing/assets/img/logo/logo-balimmo-white.png"
               alt="Balimmo"
+              width="1415"
+              height="323"
+              loading="lazy"
               className="w-[180px]"
             />
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <img src="/landing/assets/img/logo/logo-balimmo-properties.png" alt="Balimmo Properties" className="w-[130px]" />
-              <img src="/landing/assets/img/logo/logo-balimmo-construction.png" alt="Balimmo Construction" className="w-[130px]" />
-              <img src="/landing/assets/img/logo/logo-balimmo-management.png" alt="Balimmo Management" className="w-[130px]" />
+              <img src="/landing/assets/img/logo/logo-balimmo-properties.png" alt="Balimmo Properties" width="1414" height="320" loading="lazy" className="w-[130px]" />
+              <img src="/landing/assets/img/logo/logo-balimmo-construction.png" alt="Balimmo Construction" width="1416" height="321" loading="lazy" className="w-[130px]" />
+              <img src="/landing/assets/img/logo/logo-balimmo-management.png" alt="Balimmo Management" width="1434" height="320" loading="lazy" className="w-[130px]" />
             </div>
             <p className="mt-5 max-w-md text-sm text-white/70">
               Discover leading properties and secure your dream home with us. Expert guidance and
@@ -86,7 +89,7 @@ export default function Footer() {
               <h3 className="mb-2 text-sm font-semibold text-white">
                 Asosiasi Real Estate Broker Indonesia
               </h3>
-              <img src="/landing/assets/img/logo/logo-arebi.png" alt="AREBI" className="w-16" />
+              <img src="/landing/assets/img/logo/logo-arebi.png" alt="AREBI" width="250" height="283" loading="lazy" className="w-16" />
               <p className="mt-2 text-xs text-white/60">Member Number: 2025000055A</p>
             </div>
           </div>
@@ -97,7 +100,7 @@ export default function Footer() {
       <div className="border-t border-white/10 py-6">
         <div className="container-x space-y-2 text-center">
           <p className="text-sm text-white/70">
-            PT BALIMMO DEVELOPMENT GROUP © 2021 - 2025. All rights reserved
+            PT BALIMMO DEVELOPMENT GROUP © 2021 - {new Date().getFullYear()}. All rights reserved
           </p>
           <p className="mx-auto max-w-3xl text-xs text-white/50">
             Any projection of profitability or rental income is purely indicative and does not

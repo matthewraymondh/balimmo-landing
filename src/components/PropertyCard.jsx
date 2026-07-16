@@ -16,7 +16,7 @@ function Stat({ value, label, children }) {
         {value}
         {children}
       </span>
-      <span className="text-xs text-primary/60">{label}</span>
+      <span className="text-xs text-primary/70">{label}</span>
     </li>
   )
 }
@@ -34,6 +34,10 @@ export default function PropertyCard({ property, currency }) {
         <img
           src={property.image}
           alt={property.name}
+          width="862"
+          height="543"
+          loading="lazy"
+          decoding="async"
           className="h-60 w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
@@ -41,7 +45,7 @@ export default function PropertyCard({ property, currency }) {
             {property.area}
           </span>
           {property.exclusive && (
-            <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white">
+            <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-primary">
               Balimmo exclusive
             </span>
           )}
@@ -56,7 +60,7 @@ export default function PropertyCard({ property, currency }) {
           </a>
         </h3>
 
-        <p className="mt-2 text-2xl font-bold text-accent">{price}</p>
+        <p className="mt-2 text-2xl font-bold text-accent-strong">{price}</p>
 
         <hr className="my-4 border-gray-100" />
 

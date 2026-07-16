@@ -50,7 +50,11 @@ export default function WhyChoose() {
 
           <img
             src="/landing/assets/img/other/contact-us-thumb.avif"
-            alt="Why choose Balimmo"
+            alt="The Balimmo Properties team"
+            width="6720"
+            height="4276"
+            loading="lazy"
+            decoding="async"
             className="h-auto w-full rounded-lg object-cover"
           />
         </div>
