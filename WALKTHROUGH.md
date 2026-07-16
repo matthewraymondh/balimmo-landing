@@ -1,5 +1,7 @@
 # Written walkthrough — reasoning & assumptions
 
+**Matthew Raymond Hartono** · Balimmo Front-End / UI-UX Integrator take-home · July 2026
+
 *This is the walkthrough deliverable (submitted in written form, as allowed by the brief's checklist). The full ranked audit, scoring rubric, and measurement plan are in [AUDIT.md](AUDIT.md) — this document explains how I reasoned my way through the exercise.*
 
 ---
@@ -18,7 +20,7 @@ On that lens the baseline score is **41/100** and my post-fix estimate is **65/1
 
 ## The most critical finding — and why I deliberately didn't "fix" it
 
-![The original page: six listings, one grey placeholder](docs/before-desktop-full.jpeg)
+![The original listings section: six cards, all showing the same grey 862×543 placeholder](docs/before-exclusive-listings.jpeg)
 
 All six "exclusive listings" render the same grey 862×543 placeholder — I checked the files, and the three thumbnails are byte-for-byte identical (same MD5). A buyer scrolling past six identical grey boxes doesn't think "placeholder"; they think the site is broken, or the listings aren't real. Photos are the #1 decision input for property buyers, so this caps the money section's conversion at roughly zero.
 
@@ -60,7 +62,7 @@ Rebuilt: associated labels, inline validation with `role="alert"` errors and `ar
 
 Alongside it, contrast: white text on the brand gold is roughly **2:1** — a WCAG failure on every primary CTA and every price. It's dark teal on gold now (~6.5:1) — compare the "Send my request" button across the before/after screenshots above — with a darker gold token for prices on white. Lighthouse (mobile, production build): **Accessibility 96 → 100, SEO 92 → 100** — the SEO delta also reflects the added Open Graph/Twitter meta and robots.txt.
 
-![The fixed page end to end](docs/after-desktop-full.jpeg)
+A full-page capture of the fixed page is in [docs/after-desktop-full.jpeg](docs/after-desktop-full.jpeg).
 
 ## What I'd measure to prove it worked
 
