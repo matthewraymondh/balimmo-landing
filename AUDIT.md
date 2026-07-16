@@ -108,7 +108,7 @@ Portaled the sheet to `document.body` (escaping the hero's stacking context), ad
 
 ### 3.2 Hero media & loading performance — commit `03845cd`
 The poster image paints immediately (preloaded from `index.html`, `fetchpriority="high"`); the video element only mounts after `window.load`, and never for `prefers-reduced-motion` or Data-Saver/2G users; a pause/play control satisfies WCAG 2.2.2. All below-fold images: `loading="lazy"`, `decoding="async"`, explicit `width/height`. Dropped Nunito (loaded but never used) and trimmed Inter from 7 weights to the 4 in use.
-**Measured:** initial payload before first scroll drops from ~11 MB to ~0.3 MB (video now post-load only on capable connections; ~2.8 MB of below-fold images now load on scroll). LCP-image load delay fell 635 ms → 230 ms in the trace; CLS stays 0.00.
+**Measured** (cold loads of production builds, mobile + Fast 4G emulation — waterfall figure in `docs/fix2-network-waterfall.png`): the settled page needs ~180 KB, with the video starting only after the load event instead of competing from t≈1 s; 13 of the 16 images (~1.1 MB) now wait for scroll instead of downloading eagerly; and reduced-motion / Data-Saver / 2G users never fetch the 8.2 MB video at all. On capable connections the video still downloads in the background — deliberately. LCP-image load delay fell 635 ms → 230 ms in the trace; CLS stays 0.00.
 
 ### 3.3 Lead capture & contrast — commit `d1bd71d`
 Rebuilt the form: associated labels, `name`/`autocomplete`, inline validation with `role="alert"` errors + `aria-invalid`, focus jumps to the first invalid field, and a confirmation state (with a WhatsApp fast-lane) replaces the silent void. Added a WhatsApp CTA in the contact section. Contrast: dark-teal text on gold buttons (~6.5:1), new `accent-strong` token for gold text on white (prices, region names), secondary microcopy bumped to 70% opacity. Plus the quick wins listed in §2 (OG meta, robots.txt, evergreen heading, USD default, dynamic year, typo).
@@ -122,7 +122,7 @@ Rebuilt the form: associated labels, `name`/`autocomplete`, inline validation wi
 |---|---|---|---|
 | Conversion readiness (30) | 8 | 14 | Working form with feedback, WhatsApp channel, USD prices. Still capped by placeholder photos (P0-1) and dead search/cards (P0-4). |
 | UX & functionality (20) | 10 | 15 | The broken mobile search flow is fixed end-to-end; dead-end journeys remain. |
-| Performance (20) | 8 | 14 | ~11 MB → ~0.3 MB initial payload; fonts trimmed; zero CLS kept. Remaining: re-encode images, prerender, ship a built bundle. |
+| Performance (20) | 8 | 14 | Heavy media off the critical path: page settles on ~180 KB, video deferred (and skipped for reduced-motion/Data-Saver), below-fold images on demand; fonts trimmed; zero CLS kept. Remaining: re-encode images, prerender, ship a built bundle. |
 | Accessibility (10) | 6 | 9 | Lighthouse 100; pause control; labelled form. Remaining: full focus trap. |
 | Trust & content (10) | 4 | 5 | Dated title fixed, honest reassurance copy. Photos/testimonials still needed. |
 | SEO (10) | 5 | 8 | OG/Twitter, robots.txt, Lighthouse SEO 100. Remaining: SSG + JSON-LD. |

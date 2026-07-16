@@ -40,14 +40,11 @@ The original loads an 8.2 MB autoplay background video on the critical path for 
 
 The fix keeps the video but takes it off the critical path: the poster image paints immediately (preloaded, `fetchpriority="high"`), the video element only mounts after the `window.load` event, and it never loads at all for `prefers-reduced-motion` or Data-Saver/2G users. A pause/play control satisfies WCAG 2.2.2. Every below-fold image is now lazy-loaded with explicit dimensions (CLS stays 0.00), and I dropped a font family that was loaded but never used.
 
-**Measured under identical conditions** (mobile viewport, Fast 4G throttling, cache disabled, 10 seconds after load, no scrolling):
+Here is what actually goes over the wire, measured on cold production builds of both versions (fresh browser context, mobile viewport, Fast 4G + 4× CPU emulation, no scrolling — collected via the Resource Timing API):
 
-| | Before | After |
-|---|---|---|
-| Data transferred | **5.6 MB** (still climbing — the video was only half done) | **0.12 MB** |
-| Video request starts | immediately, competing with every other asset | only *after* the load event |
+![Before/after network waterfall: before, all 16 images download at once while the video competes; after, the page settles on ~180 KB and everything heavy is deferred or conditional](docs/fix2-network-waterfall.png)
 
-That's ~46× less data in the first ten seconds on a 4G phone. It looks identical on a fast dev machine — which is precisely the point: the users it saves are the ones on hotel Wi-Fi and mobile data, who are also the ones most likely to bounce.
+Two things to be precise about, because they matter for honest interpretation. First, on a capable connection the video still downloads *eventually* in the after-version — by design; desktop users keep the ambience. The win is **prioritization**: everything the user needs settles in ~180 KB at ~0.6 s, and the 8 MB stops competing with it. Second, the total saved is **conditional**: 13 of the 16 images (~1.1 MB) now wait until the user actually scrolls to them, and reduced-motion, Data-Saver and 2G users never fetch the video at all — an 8 MB saving for exactly the audiences most hurt by it. On a fast dev machine the two versions look identical, which is precisely the point: the users this fix serves are the ones on hotel Wi-Fi and mobile data, who are also the ones most likely to bounce.
 
 ![After: hero with pause control, search still front and center](docs/after-mobile-hero.jpeg)
 
