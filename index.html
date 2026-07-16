@@ -9,10 +9,28 @@
       content="Invest in Bali with confidence. Hand-picked villas & lands, tested and secured by Balimmo Properties."
     />
     <title>Balimmo | Invest in Bali</title>
+    <meta name="theme-color" content="#003538" />
+    <!-- The hero poster is the LCP image; preloading lets it start downloading
+         before the React bundle has parsed and rendered the <img>. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/landing/assets/img/banner/video-fallback.png"
+      fetchpriority="high"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Balimmo | Invest in Bali with Confidence" />
+    <meta
+      property="og:description"
+      content="Hand-picked villas & lands in Uluwatu, Canggu, Ubud and Sanur — tested and secured by Balimmo Properties."
+    />
+    <meta property="og:image" content="/landing/assets/img/banner/video-fallback.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Only the weights actually used (400/600/700/800); Nunito was loaded but never used. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>

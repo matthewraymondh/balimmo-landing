@@ -28,9 +28,11 @@
     @apply text-center text-3xl font-bold text-primary sm:text-4xl lg:text-5xl;
   }
 
-  /* Solid gold call-to-action button (original .solid__btn) */
+  /* Solid gold call-to-action button (original .solid__btn).
+     Dark teal text instead of white: white on #eba859 is ~2:1 contrast (fails
+     WCAG AA); primary on the gold is ~6.5:1. */
   .btn-solid {
-    @apply inline-flex items-center justify-center rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-accent-alt;
+    @apply inline-flex items-center justify-center rounded-full bg-accent px-7 py-3 text-sm font-bold text-primary transition-colors duration-200 hover:bg-accent-alt;
   }
 
   .btn-outline {

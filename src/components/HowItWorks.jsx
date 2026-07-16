@@ -14,7 +14,11 @@ export default function HowItWorks() {
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
           <img
             src="/landing/assets/img/other/how-it-works.png"
-            alt="How it works"
+            alt="Balimmo brochure presenting the buying process"
+            width="602"
+            height="453"
+            loading="lazy"
+            decoding="async"
             className="h-auto w-full lg:w-1/2"
           />
 

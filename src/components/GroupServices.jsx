@@ -14,7 +14,11 @@ export default function GroupServices() {
           </div>
           <img
             src="/landing/assets/img/other/balimmo-group-services.png"
-            alt="Balimmo group services"
+            alt="Balimmo group services: Properties, Construction and Villa Management"
+            width="602"
+            height="452"
+            loading="lazy"
+            decoding="async"
             className="h-auto w-full lg:w-1/2"
           />
         </div>

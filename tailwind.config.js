@@ -15,13 +15,13 @@ export default {
           muted: '#4b645f',
         },
         accent: {
-          DEFAULT: '#eba859', // gold used for prices / highlights
+          DEFAULT: '#eba859', // gold used for backgrounds / highlights
           alt: '#FFA00A',
+          strong: '#b8722c', // darker gold for text on white (≥3:1 contrast)
         },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Nunito', 'Inter', 'sans-serif'],
       },
       maxWidth: {
         container: '1200px',

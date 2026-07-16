@@ -22,13 +22,15 @@ export default function FilterChip({
     <div className="relative" ref={ref}>
       <button
         type="button"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
         onClick={() => onToggle(chipKey)}
         className={`flex min-w-[120px] items-center justify-between gap-3 rounded-xl border px-4 py-2.5 text-left transition-colors ${
           isOpen ? 'border-accent bg-accent/5' : 'border-gray-200 bg-white hover:border-gray-300'
         }`}
       >
         <span className="flex flex-col">
-          <span className="text-[11px] font-semibold uppercase tracking-wide text-primary/50">
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-primary/70">
             {label}
           </span>
           <span className="text-sm font-semibold text-primary">{value}</span>
