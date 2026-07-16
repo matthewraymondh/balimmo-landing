@@ -44,7 +44,7 @@ The sheet lives inside the hero's `relative z-10` wrapper, which creates a stack
 **3. An 8.2 MB autoplay video loads on the critical path for every visitor. _(implemented — see §3.2)_**
 No `preload` strategy, no reduced-motion or Data-Saver handling, no pause control, loaded eagerly on mobile data.
 *User impact:* seconds of bandwidth contention on 4G, real money on metered data, motion for users who opted out of it.
-*Business impact:* page-weight and LCP correlate directly with bounce; ~11 MB initial payload is 20–40× the recommended budget.
+*Business impact:* page-weight and LCP correlate directly with bounce; at ~11 MB, the initial payload is roughly 10× a generous mobile page-weight budget.
 
 **4. Primary CTAs dead-end.**
 "Find my villa" submits to a `preventDefault()` no-op; property cards link to `#slug` anchors that do not exist; footer "Login" and legal links are `href="#"`.
@@ -60,7 +60,7 @@ No validation, no error or success state, labels not associated (`label` without
 
 **6. Systemic WCAG contrast failures on the money elements. _(implemented — see §3.3)_**
 White text on the gold `#eba859` is ~2.0:1 (AA requires 4.5:1) — that's **every primary button**. Prices in gold-on-white are also ~2:1. Confirmed by Lighthouse (`color-contrast = 0`).
-*Impact:* CTAs and prices are the two things a visitor must be able to read; low-vision users and anyone outdoors on a phone will struggle. Legal exposure under accessibility regulation (the brand targets EU/French investors — EAA applies).
+*Impact:* CTAs and prices are the two things a visitor must be able to read; low-vision users and anyone outdoors on a phone will struggle. It also carries compliance risk for a brand targeting EU/French investors, where the European Accessibility Act is raising the bar for digital services.
 
 **7. No WhatsApp channel. _(implemented — see §3.3)_**
 The Bali property market (and the Indonesian market generally) runs on WhatsApp; the phone number is buried in the footer as a `tel:` link.
@@ -81,7 +81,7 @@ No way to know today's conversion rate, funnel drop-off, or whether any change w
 ### P2 — Medium
 
 11. **Trust gap at the decision moment** — no testimonials, reviews, or agent faces (the 0-byte `agents-thumb.png` suggests a team section was dropped); the AREBI membership (a real trust asset) is buried in the footer. *Fix:* testimonial strip + AREBI badge near the listings/form.
-12. **Currency defaults to IDR for an international audience** *(implemented: USD default)* — hero copy targets foreign investors and villa search prices in USD, yet cards opened in 11-digit IDR ("IDR 8,500,000,000" is unscannable for the target buyer).
+12. **Currency defaults to IDR for an international audience** *(implemented: USD default)* — hero copy targets foreign investors and villa search prices in USD, yet cards opened in 10-digit IDR ("IDR 8,500,000,000" is unscannable for the target buyer).
 13. **Dated content** *(implemented)* — "Where to Invest in **2025**" in July 2026 signals an unmaintained site; footer said "© 2021–2025".
 14. **Same team photo used twice** (Why-choose and Contact sections) — reads as template filler.
 15. **Money content is 3+ screens down on mobile** — three full-height region sections precede the listings. *Fix:* A/B a reorder (listings first) or add an in-hero "Browse villas" shortcut.
@@ -106,11 +106,11 @@ No way to know today's conversion rate, funnel drop-off, or whether any change w
 Portaled the sheet to `document.body` (escaping the hero's stacking context), added `role="dialog"` + `aria-modal`, focus moves to the close button on open and back to the trigger on close, overlay tap closes.
 **Verified:** `elementFromPoint` at the close button now returns the button; sheet overlays the navbar; Escape, overlay tap and X all close it; focus returns to "Search".
 
-### 3.2 Hero media & loading performance — commit `1fd4fab`
+### 3.2 Hero media & loading performance — commit `03845cd`
 The poster image paints immediately (preloaded from `index.html`, `fetchpriority="high"`); the video element only mounts after `window.load`, and never for `prefers-reduced-motion` or Data-Saver/2G users; a pause/play control satisfies WCAG 2.2.2. All below-fold images: `loading="lazy"`, `decoding="async"`, explicit `width/height`. Dropped Nunito (loaded but never used) and trimmed Inter from 7 weights to the 4 in use.
 **Measured:** initial payload before first scroll drops from ~11 MB to ~0.3 MB (video now post-load only on capable connections; ~2.8 MB of below-fold images now load on scroll). LCP-image load delay fell 635 ms → 230 ms in the trace; CLS stays 0.00.
 
-### 3.3 Lead capture & contrast — commit `f3d63e0`
+### 3.3 Lead capture & contrast — commit `d1bd71d`
 Rebuilt the form: associated labels, `name`/`autocomplete`, inline validation with `role="alert"` errors + `aria-invalid`, focus jumps to the first invalid field, and a confirmation state (with a WhatsApp fast-lane) replaces the silent void. Added a WhatsApp CTA in the contact section. Contrast: dark-teal text on gold buttons (~6.5:1), new `accent-strong` token for gold text on white (prices, region names), secondary microcopy bumped to 70% opacity. Plus the quick wins listed in §2 (OG meta, robots.txt, evergreen heading, USD default, dynamic year, typo).
 **Verified:** empty submit shows three inline errors and focuses First name; valid submit shows the confirmation panel. Lighthouse (mobile): **Accessibility 96 → 100, SEO 92 → 100, Best Practices 100** on the production build.
 
