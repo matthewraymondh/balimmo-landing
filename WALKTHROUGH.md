@@ -53,11 +53,15 @@ That's ~46× less data in the first ten seconds on a 4G phone. It looks identica
 
 ## Fix 3 — the lead form and the buttons
 
-The form the whole page funnels into was a black hole: no validation, no error or success state, labels not programmatically associated, no `name`/`autocomplete` (which breaks browser autofill), and a submit that silently did nothing.
+| Before: submit does nothing | After: inline validation | After: confirmation |
+|---|---|---|
+| ![Original form — this screenshot was taken right after clicking submit on an empty form: no reaction at all](docs/before-lead-form.jpeg) | ![Fixed form after an empty submit — highlighted fields with inline error messages](docs/after-lead-form-errors.jpeg) | ![Confirmation panel with a WhatsApp fast-lane](docs/after-lead-form-success.jpeg) |
+
+The form the whole page funnels into was a black hole: no validation, no error or success state, labels not programmatically associated, no `name`/`autocomplete` (which breaks browser autofill), and a submit that silently did nothing — the left screenshot was taken *after* clicking "Send my request" on an empty form.
 
 Rebuilt: associated labels, inline validation with `role="alert"` errors and `aria-invalid`, focus jumping to the first invalid field, and a clear confirmation state after submit — with a WhatsApp fast-lane on it, because in the Bali market WhatsApp is *the* contact channel and the page didn't offer it anywhere above the footer.
 
-Alongside it, contrast: white text on the brand gold is roughly **2:1** — a WCAG failure on every primary CTA and every price. It's dark teal on gold now (~6.5:1), with a darker gold token for prices on white. Lighthouse (mobile, production build): **Accessibility 96 → 100, SEO 92 → 100** — the SEO delta also reflects the added Open Graph/Twitter meta and robots.txt.
+Alongside it, contrast: white text on the brand gold is roughly **2:1** — a WCAG failure on every primary CTA and every price. It's dark teal on gold now (~6.5:1) — compare the "Send my request" button across the before/after screenshots above — with a darker gold token for prices on white. Lighthouse (mobile, production build): **Accessibility 96 → 100, SEO 92 → 100** — the SEO delta also reflects the added Open Graph/Twitter meta and robots.txt.
 
 ![The fixed page end to end](docs/after-desktop-full.jpeg)
 
